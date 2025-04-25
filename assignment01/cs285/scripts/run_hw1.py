@@ -160,8 +160,9 @@ def run_training_loop(params):
             # for imitation learning, we only need observations and actions.  
 
             # Shuffle observation and action arrays of replay buffer and take params['train_batch_size'] samples
-            ob_batch = np.random.permutation(replay_buffer.obs)[:params['train_batch_size']]
-            ac_batch = np.random.permutation(replay_buffer.acs)[:params['train_batch_size']]
+            idxs = np.random.permutation(len(replay_buffer.obs))[:params['train_batch_size']]
+            ob_batch = replay_buffer.obs[idxs]
+            ac_batch = replay_buffer.acs[idxs]
 
             # use the sampled data to train an agent
             train_log = actor.update(ob_batch, ac_batch)
